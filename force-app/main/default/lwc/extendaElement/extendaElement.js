@@ -28,10 +28,10 @@ export default class ExtendaElement extends LightningElement {
 	/**
 	 * Handle errors
 	 * @param error - error object
-	 * @param dimissable - whether the toast is dismissable (optional)
+	 * @param dismissible - whether the toast is dismissible (optional)
 	 * @return undefined
 	 */
-	handleError(error, dimissable = true) {
+	handleError(error, dismissible = true) {
 
 		const rawMessage = error?.body?.message || error?.message || error;
 
@@ -41,12 +41,12 @@ export default class ExtendaElement extends LightningElement {
 
 		console.warn(error)
 		this.errorMessage = message.join('\n');
-		this.toast(
-			'error', 
-			message, 
-			'Error',
-			dimissable ? 'dismissable' : 'sticky',
-		);
+		this.toast({
+			variant: 'error', 
+			message: this.errorMessage, 
+			title: 'Error',
+			dismissible: dismissible ? 'dismissible' : 'sticky',
+		});
 	}
 
 	/* 
@@ -55,7 +55,7 @@ export default class ExtendaElement extends LightningElement {
 	* @property variant - type of toast (error, success, etc.)
 	* @property message - message to display
 	* @property title - title of the toast (optional)
-	* @property mode - mode of the toast (dismissable, sticky, etc.)
+	* @property mode - mode of the toast (dismissible, sticky, etc.)
 	* @return true
 	*/
 	toast(config = {}) {
@@ -64,10 +64,10 @@ export default class ExtendaElement extends LightningElement {
 			variant, 
 			message, 
 			title, 
-			mode = 'dismissable',
+			mode = 'dismissible',
 		} = config;
 
-		const m = mode ? mode : 'dismissable';
+		const m = mode ? mode : 'dismissible';
 
 		const t = title ? title : variant === 'error' ? 'Error' : 'Success';
 
