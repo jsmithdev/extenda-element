@@ -33,8 +33,8 @@ export default class ExtendaElement extends LightningElement {
 	 */
 	handleError(error, dismissible = true) {
 
-		const rawMessage = error?.body?.message || error?.message || error;
-
+		const rawMessage = this.parseError(error);
+		
 		const message = Array.isArray(rawMessage) 
 			? rawMessage.map(x => x.message).join('')
 			: [rawMessage];
@@ -79,5 +79,24 @@ export default class ExtendaElement extends LightningElement {
 		}));
 
 		return true;
+	}
+	
+	parseError(error) {
+		if(error?.body?.message) {
+			return error.body.message;
+		}
+		else if(error?.body?.pageErrors?.length) {
+			return error.body.pageErrors[0].message;
+		}
+		else if(error?.body?.fieldErrors?.length) {
+			return error.body.fieldErrors[0].message;
+		}
+		else if(error?.body?.duplicateResults?.length) {
+			return error.body.duplicateResults[0].message;
+		}
+		else if(error?.message) {
+			return error.message;
+		}
+		return error;
 	}
 }
