@@ -28,10 +28,11 @@ export default class ExtendaElement extends LightningElement {
 	/**
 	 * Handle errors
 	 * @param error - error object
-	 * @param dismissible - whether the toast is dismissible (optional)
+	 * @param toast - whether to toast the error (optional, default true)
+	 * @param dismissible - whether the toast is dismissible (optional, default true)
 	 * @return undefined
 	 */
-	handleError(error, dismissible = true) {
+	handleError(error, toast = true, dismissible = true) {
 
 		const rawMessage = this.parseError(error);
 		
@@ -47,6 +48,8 @@ export default class ExtendaElement extends LightningElement {
 			title: 'Error',
 			dismissible: dismissible ? 'dismissible' : 'sticky',
 		});
+
+		return this.errorMessage;
 	}
 
 	/* 
